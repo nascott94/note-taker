@@ -1,20 +1,19 @@
-//connect the notes.html to the index.html
-//requirer in all the appropriate files etc
-// build back end
-//deploy on heroku
-
+//dependencies
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const util = require("util");
+const database = require("./db/db.json");
 
+//express
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-//middleware used to parse JSON and urlencoded from data
+//middleware used to parse JSON and urlencoded from data, need for api
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//assests
 app.use(express.static("public"));
 
 //GET route for index.html
@@ -49,7 +48,7 @@ const readAndAppend = (content, file) => {
 
 // GET Route for retrieving all the notes
 app.get("/api/db", (req, res) => {
-  console.info(`${req.method} request received for tips`);
+  console.info(`${req.method} request received for notes`);
   readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
 });
 
@@ -59,19 +58,26 @@ app.post("/api/db", (req, res) => {
 
   const { title, text } = req.body;
 
-  if (req.body) {
+  if (title && text) {
     const newNote = {
       title,
       text,
     };
 
     readAndAppend(newNote, "./db/db.json");
-    res.json(`Note added successfully `);
+
+    const response = {
+      status: "success",
+      body: newNote,
+    };
+
+    res.json(response);
   } else {
     res.error("Error in adding note");
   }
 });
 
+//listening
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
 );
