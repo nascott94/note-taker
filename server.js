@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const util = require("util");
-const database = require("./db/db.json");
+// const database = require("./db/db.json");
 
 //express
 const PORT = process.env.PORT || 3001;
@@ -25,6 +25,12 @@ app.get("/", (req, res) =>
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/notes.html"))
 );
+
+// GET Route for retrieving all the notes
+app.get("/api/db", (req, res) => {
+  console.info(`${req.method} request received for notes`);
+  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
+});
 
 // Promise version of fs.readFile
 const readFromFile = util.promisify(fs.readFile);
@@ -59,12 +65,6 @@ const readAndAppend = (content, file) => {
     }
   });
 };
-
-// GET Route for retrieving all the notes
-app.get("/api/db", (req, res) => {
-  console.info(`${req.method} request received for notes`);
-  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
-});
 
 // POST Route for a note
 app.post("/api/notes", (req, res) => {
