@@ -3,17 +3,12 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const util = require("util");
-// const database = require("./db/db.json");
-
-//express
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 //middleware used to parse JSON and urlencoded from data, need for api
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//assests
 app.use(express.static("public"));
 
 //GET route for index.html
@@ -27,9 +22,11 @@ app.get("/notes", (req, res) =>
 );
 
 // GET Route for retrieving all the notes
-app.get("/api/db", (req, res) => {
+app.get("/api/notes", (req, res) => {
   console.info(`${req.method} request received for notes`);
-  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)));
+  readFromFile(path.join(__dirname, "/db/db.json"), "utf8").then((data) =>
+    res.json(JSON.parse(data))
+  );
 });
 
 // Promise version of fs.readFile
