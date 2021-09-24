@@ -88,6 +88,17 @@ app.post("/api/notes", (req, res) => {
   }
 });
 
+app.delete("/api/notes/:id", (req, res) => {
+  console.log(req.params);
+  //req equal to the index
+  readFromFile(path.join(__dirname, "/db/db.json"), "utf8").then((data) => {
+    var notes = JSON.parse(data);
+    notes.splice(req.params.id, 1);
+    //rewrite file
+    res.JSON;
+  });
+});
+
 //listening
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
