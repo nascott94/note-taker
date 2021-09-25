@@ -5,6 +5,7 @@ const fs = require("fs");
 const util = require("util");
 const PORT = process.env.PORT || 3001;
 const app = express();
+const database = require("./db/db");
 
 //middleware used to parse JSON and urlencoded from data, need for api
 app.use(express.json());
@@ -88,18 +89,42 @@ app.post("/api/notes", (req, res) => {
   }
 });
 
+// app.delete("/api/notes/:id", (req, res) => {
+//   console.log(req.params);
+//   //req equal to the index
+//   readFromFile(path.join(__dirname, "/db/db.json"), "utf8").then((data) => {
+//     var notes = JSON.parse(data);
+//     notes.splice(req.params.id, 1);
+//     //rewrite file
+//     res.JSON;
+//   });
+// });
+
+//delete route...only working for recently added notes
+// deleting note by id
 app.delete("/api/notes/:id", (req, res) => {
   console.log(req.params);
-  //req equal to the index
-  readFromFile(path.join(__dirname, "/db/db.json"), "utf8").then((data) => {
-    var notes = JSON.parse(data);
-    notes.splice(req.params.id, 1);
-    //rewrite file
-    res.JSON;
+  let jsonFilePath = path.join(__dirname, "/db/db.json");
+  // finding the id using a for loop
+  for (let i = 0; i < database.length; i++) {
+    if (database[i].id == req.params.id) {
+      // Splice takes i position, and then deletes the 1 note.
+      database.splice(i, 1);
+      break;
+    }
+  }
+  // rewrite the db json file without the deleted note
+  fs.writeFileSync(jsonFilePath, JSON.stringify(database), (err) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      console.log("Your note was deleted!");
+    }
   });
+  res.json(database);
 });
 
-//listening
+//listening and set up server
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
 );
