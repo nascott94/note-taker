@@ -7,6 +7,36 @@ This web application gives the user the ability to submit notes and save them fo
 Deployed Link with Heroku:
 https://morning-meadow-72326.herokuapp.com/
 
-## Technology Used
+## Table of Contents
 
-HTML, CSS, JavaScript, Express JS, Heroku
+- [Installation](#installation)
+- [Usage](#Usage)
+- [Links](#links)
+- [Features](#features)
+- [Contact](#Contact)
+
+## Installation
+
+- Download or clone repository
+- npm install to install the required npm packages to run
+
+## Usage
+
+Run the server with: node server.js
+
+Navigate to: http://localhost:3000
+
+The user can add transactions as deposits or expenses by inputting the following:
+
+Click add 'Get Started'
+Type new note and save
+Delete notes when finished
+
+## Links
+
+- Github: https://nascott94.github.io/note-taker/
+- Heroku: https://morning-meadow-72326.herokuapp.com/
+
+## Contact
+
+Contact nascott94@outlook.com for any questions.
