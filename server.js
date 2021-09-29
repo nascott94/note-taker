@@ -69,24 +69,25 @@ app.post("/api/notes", (req, res) => {
   console.info(`${req.method} request received to add a note`);
 
   const { title, text } = req.body;
+  readFromFile(path.join(__dirname, "/db/db.json"), "utf8").then((data) => {
+    if (title && text) {
+      const newNote = {
+        title,
+        text,
+        id: data.length + 1,
+      };
+      readAndAppend(newNote, "./db/db.json");
 
-  if (title && text) {
-    const newNote = {
-      title,
-      text,
-    };
+      const response = {
+        status: "success",
+        body: newNote,
+      };
 
-    readAndAppend(newNote, "./db/db.json");
-
-    const response = {
-      status: "success",
-      body: newNote,
-    };
-
-    res.json(response);
-  } else {
-    res.error("Error in adding note");
-  }
+      res.json(response);
+    } else {
+      res.error("Error in adding note");
+    }
+  });
 });
 
 // app.delete("/api/notes/:id", (req, res) => {
