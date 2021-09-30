@@ -29,7 +29,9 @@ Navigate to: http://localhost:3000
 The user can add transactions as deposits or expenses by inputting the following:
 
 Click add 'Get Started'
+![Screenshot](images/screenshot.png)
 Type new note and save
+![Screenshot](images/screenshot2.png)
 Delete notes when finished
 
 ## Links
